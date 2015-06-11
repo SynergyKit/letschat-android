@@ -2,4 +2,35 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- MARGIN, PADDING -->
+    <dimen name="appPadding">8dp</dimen>
+    <dimen name="abPaddingLeft">0dp</dimen>
+    <dimen name="abPaddingRight">0dp</dimen>
+
+    <!-- DEFAULT FONT -->
+    <dimen name="defaultFontSize">16sp</dimen>
+
+    <!-- BUTTONS -->
+    <dimen name="formButtonFontSize">12sp</dimen>
+
+    <!-- KctButton -->
+    <dimen name="buttonTextSize">16sp</dimen>
+    <dimen name="buttonMinHeight">50dp</dimen>
+    <dimen name="buttonMargin">4dp</dimen>
+    <dimen name="buttonPadding">8dp</dimen>
+
+    <!-- EDITTEXT -->
+    <dimen name="editTextHorizontalPadding">8dp</dimen>
+    <dimen name="editTextVerticalPadding">4dp</dimen>
+    <dimen name="editTextStrokeWidth">1dp</dimen>
+    <dimen name="editTextCornerRadius">1dp</dimen>
+    <dimen name="editTextMinHeight">40dp</dimen>
+    <dimen name="editTextLocationMinWidth">200dp</dimen>
+    <dimen name="editTextInventoryItemMinWidth">200dp</dimen>
+    <dimen name="editTextTextSize">15sp</dimen>
+    <dimen name="editTextSearchMinWidth">200dp</dimen>
+    <dimen name="editTextPaddingLeft">20dp</dimen>
+    <dimen name="editTextPaddingRight">20dp</dimen>
+
 </resources>

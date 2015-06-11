@@ -1,8 +1,30 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/ActionBarBaseTheme</item>
+        <item name="android:buttonStyle">@style/defaultButton</item>
+        <item name="android:listViewStyle">@style/defaultListView</item>
+        <item name="android:editTextStyle">@style/editText</item>
+        <!--<item name="android:checkboxStyle">@style/checkBox</item>-->
+        <item name="colorPrimary">@color/app_color</item>
+        <item name="colorPrimaryDark">@color/app_color_dark</item>
+        <item name="colorAccent">@color/app_color</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
+
+    <style name="ActionBarBaseTheme" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="android:background">@drawable/ab_background</item>
+        <item name="android:titleTextStyle">@style/TextActionBarBaseTheme</item>
+        <item name="android:paddingLeft">@dimen/abPaddingLeft</item>
+        <item name="android:paddingRight">@dimen/abPaddingRight</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="TextActionBarBaseTheme" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/defaultFontSize</item>
+    </style>
+
+
 
 </resources>

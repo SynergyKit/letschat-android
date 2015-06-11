@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Theme -->
+    <color name="white">#FFFFFF</color>
+    <color name="gray_brightness38">#606060</color>
+    <color name="gray_brightness50">#808080</color>
+    <color name="gray_brightness65">#A6A6A6</color>
+    <color name="gray_brightness73">#BBBBBB</color>
+    <color name="gray_brightness77">#C5C5C5</color>
+    <color name="gray_brightness83">#D4D4D4</color>
+    <color name="gray_brightness92">#EAEAEA</color>
+    <color name="black_transparent">#19000000</color>
+    <color name="blue">#1364d6</color>
+    <color name="blue_fb">#1e5199</color>
+
+    <!-- Default colors -->
+    <color name="app_color">@color/blue</color>
+    <color name="app_color_dark">#000000</color>
+
+    <!-- ActionBar -->
+    <color name="actionBarLabel">@color/app_color</color>
+    <color name="actionBarBackground">@color/gray_brightness92</color>
+    <color name="actionBarSelector">@color/black_transparent</color>
+
+    <!-- ListView -->
+    <color name="listviewDivider">@color/gray_brightness73</color>
+
+    <!-- EditText -->
+    <color name="editTextDescription">@color/gray_brightness38</color>
+    <color name="editTextHint">@color/gray_brightness65</color>
+    <color name="editTextStrokeColor">@color/gray_brightness65</color>
+    <color name="editTextBackground">@color/white</color>
+
+</resources>
