@@ -7,6 +7,7 @@
     <dimen name="appPadding">8dp</dimen>
     <dimen name="abPaddingLeft">0dp</dimen>
     <dimen name="abPaddingRight">0dp</dimen>
+    <dimen name="defaultMargin">15dp</dimen>
 
     <!-- DEFAULT FONT -->
     <dimen name="defaultFontSize">16sp</dimen>
@@ -32,5 +33,9 @@
     <dimen name="editTextSearchMinWidth">200dp</dimen>
     <dimen name="editTextPaddingLeft">20dp</dimen>
     <dimen name="editTextPaddingRight">20dp</dimen>
+
+    <!-- Login Activity -->
+    <dimen name="loginActivityTextViewMarginTop">10dp</dimen>
+    <dimen name="loginActivityTextViewMarginBottom">10dp</dimen>
 
 </resources>

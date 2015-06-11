@@ -10,16 +10,21 @@
     <color name="gray_brightness77">#C5C5C5</color>
     <color name="gray_brightness83">#D4D4D4</color>
     <color name="gray_brightness92">#EAEAEA</color>
+    <color name="gray_brightness95">#F2F2F2</color>
     <color name="black_transparent">#19000000</color>
-    <color name="blue">#1364d6</color>
-    <color name="blue_fb">#1e5199</color>
+    <color name="transparent">@android:color/transparent</color>
 
-    <!-- Default colors -->
-    <color name="app_color">@color/blue</color>
-    <color name="app_color_dark">#000000</color>
+    <!-- SynergyKit -->
+    <color name="synergykit_blue">#1364D6</color>
+    <color name="synergykit_blue_dark">#0053C7</color>
+    <color name="synergykit_white">@color/white</color>
+
+    <!-- Firebase -->
+    <color name="firebase_yellow">#FFD95D</color>
+    <color name="firebase_yellow_dark">#FFC21D</color>
+    <color name="firebase_black">#1D1D1E</color>
 
     <!-- ActionBar -->
-    <color name="actionBarLabel">@color/app_color</color>
     <color name="actionBarBackground">@color/gray_brightness92</color>
     <color name="actionBarSelector">@color/black_transparent</color>
 

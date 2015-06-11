@@ -1,30 +1,101 @@
 <resources>
 
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+
+
+
+        <!--&lt;!&ndash;<item name="android:windowNoTitle">true</item>&ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="android:windowActionBar">false</item>&ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="windowActionBar">false</item>&ndash;&gt;-->
+
+    <!--</style>-->
+
+    <!--<style name="Toolbar.Synergykit" parent="Toolbar">-->
+        <!--<item name="android:textColorPrimary">@color/synergykit_white</item>-->
+        <!--<item name="actionMenuTextColor">@color/synergykit_white</item>-->
+        <!--<item name="background">@color/synergykit_blue</item>-->
+    <!--</style>-->
+
+    <!--<style name="Toolbar.Firebase" parent="Toolbar">-->
+        <!--<item name="android:textColorPrimary">@color/firebase_black</item>-->
+        <!--<item name="actionMenuTextColor">@color/firebase_black</item>-->
+        <!--<item name="background">@color/firebase_yellow</item>-->
+    <!--</style>-->
+
+    <!--<style name="Toolbar" parent="Theme.AppCompat">-->
+        <!--&lt;!&ndash; Test color &ndash;&gt;-->
+        <!--<item name="colorPrimary">#FF0000</item>-->
+        <!--<item name="colorPrimaryDark">#FF00DD</item>-->
+        <!--<item name="colorAccent">#000000</item>-->
+    <!--</style>-->
+
+    <!--<style name="layoutGray">-->
+        <!--<item name="android:layout_width">match_parent</item>-->
+        <!--<item name="android:layout_height">wrap_content</item>-->
+        <!--<item name="android:background">@color/gray_brightness95</item>-->
+        <!--<item name="android:padding">@dimen/defaultMargin</item>-->
+    <!--</style>-->
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/ActionBarBaseTheme</item>
-        <item name="android:buttonStyle">@style/defaultButton</item>
-        <item name="android:listViewStyle">@style/defaultListView</item>
-        <item name="android:editTextStyle">@style/editText</item>
-        <!--<item name="android:checkboxStyle">@style/checkBox</item>-->
-        <item name="colorPrimary">@color/app_color</item>
-        <item name="colorPrimaryDark">@color/app_color_dark</item>
-        <item name="colorAccent">@color/app_color</item>
+
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="AppTheme.Synergykit" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:editTextStyle">@style/editText</item>
+        <item name="android:listViewStyle">@style/defaultListView</item>
+        <item name="android:actionBarStyle">@style/ActionBarBaseTheme.Synergykit</item>
+        <item name="android:buttonStyle">@style/Button.Synergykit</item>
+        <item name="colorPrimary">@color/synergykit_blue</item>
+        <item name="colorPrimaryDark">@color/synergykit_blue_dark</item>
+        <item name="colorAccent">@color/synergykit_white</item>
+    </style>
+
+    <style name="AppTheme.Firebase" parent="Theme.AppCompat.Light">
+        <item name="android:editTextStyle">@style/editText</item>
+        <item name="android:listViewStyle">@style/defaultListView</item>
+        <item name="android:actionBarStyle">@style/ActionBarBaseTheme.Firebase</item>
+        <item name="android:buttonStyle">@style/Button.Firebase</item>
+        <item name="colorPrimary">@color/firebase_yellow</item>
+        <item name="colorPrimaryDark">@color/firebase_yellow_dark</item>
+        <item name="colorAccent">@color/firebase_black</item>
+    </style>
+
     <style name="ActionBarBaseTheme" parent="@style/Widget.AppCompat.ActionBar.Solid">
-        <item name="android:background">@drawable/ab_background</item>
-        <item name="android:titleTextStyle">@style/TextActionBarBaseTheme</item>
         <item name="android:paddingLeft">@dimen/abPaddingLeft</item>
         <item name="android:paddingRight">@dimen/abPaddingRight</item>
         <item name="elevation">0dp</item>
     </style>
 
+    <style name="ActionBarBaseTheme.Synergykit" parent="ActionBarBaseTheme">
+        <item name="android:background">@color/synergykit_blue</item>
+        <item name="android:titleTextStyle">@style/TextActionBarBaseTheme.Synergykit</item>
+
+    </style>
+
+    <style name="ActionBarBaseTheme.Firebase" parent="ActionBarBaseTheme">
+        <item name="android:background">@color/firebase_yellow</item>
+        <item name="android:titleTextStyle">@style/TextActionBarBaseTheme.Firebase</item>
+    </style>
+
     <style name="TextActionBarBaseTheme" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/defaultFontSize</item>
     </style>
 
+    <style name="TextActionBarBaseTheme.Synergykit" parent="TextActionBarBaseTheme">
+        <item name="android:textColor">@color/synergykit_white</item>
+    </style>
 
+    <style name="TextActionBarBaseTheme.Firebase" parent="TextActionBarBaseTheme">
+        <item name="android:textColor">@color/firebase_black</item>
+    </style>
+
+    <style name="layoutGray">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/gray_brightness95</item>
+        <item name="android:padding">@dimen/defaultMargin</item>
+    </style>
 
 </resources>

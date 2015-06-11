@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="defaultButton" parent="@android:style/Widget.Holo.Light.Button">
+    <style name="Button" parent="@android:style/Widget.Holo.Light.Button">
         <item name="android:minHeight">@dimen/buttonMinHeight</item>
         <item name="android:layout_margin">@dimen/buttonMargin</item>
-        <item name="android:background">@drawable/button_selector</item>
         <item name="android:textSize">@dimen/buttonTextSize</item>
-        <item name="android:textColor">@drawable/text_button_selector</item>
         <item name="android:padding">@dimen/buttonPadding</item>
-
     </style>
 
-    <style name="chatSendButton" parent="@style/defaultButton">
-        <item name="android:background">@drawable/button_blue_selector</item>
-        <item name="android:textColor">@color/white</item>
+    <style name="Button.Synergykit" parent="Button">
+        <item name="android:background">@drawable/button_synergykit_selector</item>
+        <item name="android:textColor">@color/synergykit_white</item>
     </style>
 
-    <style name="defaultListView" parent="@android:style/Widget.ListView">
-        <item name="android:overScrollMode">always</item>
-        <item name="android:dividerHeight">1dp</item>
-        <item name="android:divider">@color/listviewDivider</item>
-        <item name="android:choiceMode">singleChoice</item>
-        <item name="android:listSelector">@drawable/ab_selector</item>
+    <style name="Button.Firebase" parent="Button">
+        <item name="android:background">@drawable/button_firebase_selector</item>
+        <item name="android:textColor">@color/firebase_black</item>
     </style>
 
     <style name="editText" parent="@style/Widget.AppCompat.EditText">
@@ -30,12 +24,19 @@
         <item name="android:textColor">@color/editTextDescription</item>
         <item name="android:minHeight">@dimen/buttonMinHeight</item>
         <item name="android:background">@drawable/edit_text_selector</item>
-        <item name="android:paddingLeft">@dimen/editTextPaddingLeft</item>
-        <item name="android:paddingRight">@dimen/editTextPaddingRight</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
         <item name="android:inputType">textCapSentences</item>
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="defaultListView" parent="@android:style/Widget.ListView">
+        <item name="android:overScrollMode">always</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:divider">@color/listviewDivider</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:listSelector">@color/transparent</item>
+    </style>
 
 
 
