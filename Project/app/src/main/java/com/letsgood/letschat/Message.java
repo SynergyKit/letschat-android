@@ -1,12 +1,34 @@
 package com.letsgood.letschat;
 
-public class Message {
+import com.google.gson.annotations.Expose;
+import com.letsgood.synergykitsdkandroid.resources.SynergykitObject;
 
-    protected String text;
-    protected long userId;
+public class Message extends SynergykitObject {
 
-    public Message(long userId, String text) {
-        this.userId = userId;
+    @Expose
+    private String name;
+
+    @Expose
+    private String text;
+
+    public Message(String name, String text) {
+        this.name = name;
+        this.text = text;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
         this.text = text;
     }
 

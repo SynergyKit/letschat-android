@@ -9,12 +9,12 @@ import android.widget.TextView;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 
-    private long myUserId;
+    private String userName;
     private boolean isSynergykit;
 
-    public MessageAdapter(Context context, long myUserId, boolean isSynergykit) {
+    public MessageAdapter(Context context, String userName, boolean isSynergykit) {
         super(context, R.layout.item_chat_message_left);
-        this.myUserId = myUserId;
+        this.userName = userName;
         this.isSynergykit = isSynergykit;
     }
 
@@ -24,7 +24,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         Message message = getItem(position);
 
         if (message == null) return convertView;
-        boolean myMessage = myUserId == message.userId;
+        boolean myMessage = userName.equals(message.getName());
 
         // my message
         if (myMessage) {
@@ -37,10 +37,10 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
 
         TextView messageTextView = (TextView) convertView.findViewById(R.id.messageTextView);
-        messageTextView.setText(message.text);
+        messageTextView.setText(message.getText());
 
         TextView userLetterTextView = (TextView) convertView.findViewById(R.id.userLetterTextView);
-        userLetterTextView.setText(""+myUserId);
+        userLetterTextView.setText(message.getName().substring(0, 1));
 
         return convertView;
     }
