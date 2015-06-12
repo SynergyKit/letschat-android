@@ -2,8 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    tools:context=".ChatActivity">
 
     <ListView
         android:id="@+id/messageListView"
@@ -13,20 +15,19 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="10dp"
         android:background="@color/transparent"
-        android:listSelector="@color/transparent"
         android:clickable="false"
         android:dividerHeight="0dp"
+        android:listSelector="@color/transparent"
         android:orientation="vertical"
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
 
     <RelativeLayout
+        android:id="@+id/messageSendWrapper"
+        style="@style/layoutGray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/layoutGray"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/messageSendWrapper"
-        >
+        android:layout_alignParentBottom="true">
 
         <EditText
             android:id="@+id/messageEditText"
@@ -34,12 +35,12 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_toLeftOf="@+id/buttonSend"
+            android:hint="Write a message..."
             android:inputType="textCapSentences"
             android:paddingLeft="@dimen/defaultMargin"
             android:paddingRight="@dimen/defaultMargin"
-            android:singleLine="true"
 
-            android:hint="Write a message..."/>
+            android:singleLine="true" />
 
 
         <Button
@@ -47,8 +48,8 @@
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
             android:layout_alignParentRight="true"
+            android:layout_margin="0dp"
             android:enabled="false"
             android:text="Send" />
 

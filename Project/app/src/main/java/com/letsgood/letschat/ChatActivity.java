@@ -21,15 +21,18 @@ public class ChatActivity extends AppCompatActivity {
     private Button sendButton;
     private EditText messageEditText;
     private ListView messageListView;
+    private MessageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getExtras();
-        setTheme(isSynergyKit?R.style.AppTheme_Synergykit:R.style.AppTheme_Firebase);
+        setTheme(isSynergyKit ? R.style.AppTheme_Synergykit : R.style.AppTheme_Firebase);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         setupActionBar();
+        initViews();
         setupViews();
+        setupListeners();
     }
 
     private void getExtras() {
@@ -48,21 +51,30 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void setupViews() {
+    private void initViews() {
         messageListView = (ListView) findViewById(R.id.messageListView);
-
+        messageEditText = (EditText) findViewById(R.id.messageEditText);
         sendButton = (Button) findViewById(R.id.buttonSend);
+    }
+
+    private void setupViews() {
         sendButton.setBackgroundResource(isSynergyKit ? R.drawable.button_synergykit_selector : R.drawable.button_firebase_selector);
         sendButton.setTextColor(getResources().getColor(isSynergyKit ? R.color.synergykit_white : R.color.firebase_black));
+        adapter = new MessageAdapter(getApplicationContext(), 1, isSynergyKit);
+        messageListView.setAdapter(adapter);
+    }
+
+    private void setupListeners() {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (messageEditText.getText() != null)
-                    Toast.makeText(getApplicationContext(), messageEditText.getText() , Toast.LENGTH_SHORT).show();
+                if (messageEditText.getText() != null) {
+                    sendMessage(messageEditText.getText().toString());
+//                    Toast.makeText(getApplicationContext(), messageEditText.getText() , Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        messageEditText = (EditText) findViewById(R.id.messageEditText);
         messageEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -92,6 +104,10 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    private void sendMessage(String message) {
+        adapter.add(new Message(1, message));
+        adapter.notifyDataSetChanged();
+    }
 
 
 }

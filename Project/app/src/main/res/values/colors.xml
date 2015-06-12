@@ -16,11 +16,13 @@
 
     <!-- SynergyKit -->
     <color name="synergykit_blue">#1364D6</color>
+    <color name="synergykit_blue_light">#dce9f9</color>
     <color name="synergykit_blue_dark">#0053C7</color>
     <color name="synergykit_white">@color/white</color>
 
     <!-- Firebase -->
     <color name="firebase_yellow">#FFD95D</color>
+    <color name="firebase_yellow_light">#FFEEB8</color>
     <color name="firebase_yellow_dark">#FFC21D</color>
     <color name="firebase_black">#1D1D1E</color>
 
@@ -36,5 +38,15 @@
     <color name="editTextHint">@color/gray_brightness65</color>
     <color name="editTextStrokeColor">@color/gray_brightness65</color>
     <color name="editTextBackground">@color/white</color>
+
+    <!-- Chat -->
+    <color name="chatMessageUserBackground">#4d4c4a</color>
+    <color name="synergykit_chatMessageUserOwnerBackground">@color/synergykit_blue</color>
+    <color name="synergykit_chatMessageLeftBackground">@color/synergykit_blue_light</color>
+    <color name="firebase_chatMessageUserOwnerBackground">@color/firebase_yellow</color>
+    <color name="firebase_chatMessageLeftBackground">@color/firebase_yellow_light</color>
+    <color name="chatMessageLeftText">@color/gray_brightness38</color>
+    <color name="chatMessageRightText">@color/gray_brightness38</color>
+    <color name="chatMessageRightBackground">#e7e5e2</color>
 
 </resources>

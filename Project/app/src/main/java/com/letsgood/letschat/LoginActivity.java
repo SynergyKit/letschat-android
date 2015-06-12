@@ -33,8 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setupActionBar();
         initViews();
-        setListeners();
-        setCallbacks();
+        setupListeners();
     }
 
     private void setupActionBar() {
@@ -47,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         facebookButton = (LoginButton) findViewById(R.id.login_button);
     }
 
-    private void setListeners() {
+    private void setupListeners() {
         // synergykit
         synergykit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,9 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                     LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
             }
         });
-    }
 
-    private void setCallbacks() {
         callbackManager = CallbackManager.Factory.create();
         facebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
