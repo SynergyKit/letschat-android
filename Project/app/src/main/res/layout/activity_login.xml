@@ -1,29 +1,41 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:layout_height="match_parent" >
 
-    <ImageView
-        android:id="@+id/chat_synergykit"
-        android:layout_height="200dp"
-        android:layout_width="200dp"
-        android:src="@drawable/ic_firebase"
-        android:contentDescription="@string/login_chat_synergykit" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_marginTop="@dimen/loginActivityTextViewMarginTop"
-        android:layout_marginBottom="@dimen/loginActivityTextViewMarginBottom"
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="vs" />
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-    <ImageView
-        android:id="@+id/chat_firebase"
-        android:layout_height="200dp"
-        android:layout_width="200dp"
-        android:src="@drawable/ic_firebase"
-        android:contentDescription="@string/login_chat_synergykit" />
+        <!-- Todo change icon -->
+        <ImageView
+            android:id="@+id/chat_synergykit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/login_enter_chat_synergykit"
+            android:padding="@dimen/loginImagePadding"
+            android:src="@drawable/ic_firebase" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/chat_firebase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/login_enter_chat_firebase"
+            android:padding="@dimen/loginImagePadding"
+            android:src="@drawable/ic_firebase" />
+
+    </LinearLayout>
+
+    <com.facebook.login.widget.LoginButton
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

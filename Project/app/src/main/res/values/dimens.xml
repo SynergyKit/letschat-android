@@ -37,5 +37,6 @@
     <!-- Login Activity -->
     <dimen name="loginActivityTextViewMarginTop">10dp</dimen>
     <dimen name="loginActivityTextViewMarginBottom">10dp</dimen>
+    <dimen name="loginImagePadding">30dp</dimen>
 
 </resources>

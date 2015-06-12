@@ -2,11 +2,18 @@
     <string name="app_name">LetsChat</string>
 
     <!-- Login Activity -->
-    <string name="login_chat_synergykit">Chat via SynergyKit</string>
-    <string name="login_chat_firebase">Chat via Firebase</string>
+    <string name="login_enter_chat_synergykit">Chat via SynergyKit</string>
+    <string name="login_enter_chat_firebase">Chat via Firebase</string>
+    <string name="login_not_logged_in">You're not logged in. Log in first.</string>
 
     <!-- Chat Activity-->
     <string name="chat_title_synergykit">LetsChat - SynergyKit</string>
     <string name="chat_title_firebase">LetsChat - Firebase</string>
+
+    <!-- Facebook -->
+    <string name="facebook_app_id">858099304271986</string>
+    <string name="facebook_login_success">You have successfully logged in with facebook.</string>
+    <string name="facebook_login_cancel">Facebook login was canceled. Try again.</string>
+    <string name="facebook_login_failed">Facebook login failed. Try again.</string>
 
 </resources>
