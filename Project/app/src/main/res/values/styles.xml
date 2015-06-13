@@ -71,7 +71,6 @@
     <style name="ActionBarBaseTheme.Synergykit" parent="ActionBarBaseTheme">
         <item name="android:background">@color/synergykit_blue</item>
         <item name="android:titleTextStyle">@style/TextActionBarBaseTheme.Synergykit</item>
-
     </style>
 
     <style name="ActionBarBaseTheme.Firebase" parent="ActionBarBaseTheme">

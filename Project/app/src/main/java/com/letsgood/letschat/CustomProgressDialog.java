@@ -35,16 +35,12 @@ import android.content.Context;
 
 public class CustomProgressDialog {
 
-	private Context context;
 	private ProgressDialog pd;
-	private String text;
-	
-	public CustomProgressDialog(Context context, String text){
-		this.text = text;
-		
+
+	public CustomProgressDialog(Context context/*, String text*/){
 		pd = new ProgressDialog(context);
 		pd.setCancelable(false);
-		pd.setMessage(text);
+//		pd.setMessage(text);
 		show();
 	}
 	

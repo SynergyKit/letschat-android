@@ -9,6 +9,8 @@
     <!-- Chat Activity-->
     <string name="chat_title_synergykit">LetsChat - SynergyKit</string>
     <string name="chat_title_firebase">LetsChat - Firebase</string>
+    <string name="chat_login_failed">Login failed. Try again.</string>
+    <string name="chat_message_send_failed">Sending message failed. Try again.</string>
 
     <!-- Facebook -->
     <string name="facebook_app_id">858099304271986</string>
