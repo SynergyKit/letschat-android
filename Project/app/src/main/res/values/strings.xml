@@ -17,5 +17,7 @@
     <string name="facebook_login_success">You have successfully logged in with facebook.</string>
     <string name="facebook_login_cancel">Facebook login was canceled. Try again.</string>
     <string name="facebook_login_failed">Facebook login failed. Try again.</string>
+    <string name="chat_edit_text_hint">Write a message...</string>
+    <string name="chat_button_send">Send</string>
 
 </resources>

@@ -34,8 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_toLeftOf="@+id/buttonSend"
-            android:hint="Write a message..."
+            android:layout_toStartOf="@+id/buttonSend"
+            android:hint="@string/chat_edit_text_hint"
             android:inputType="textCapSentences"
             android:paddingLeft="@dimen/defaultMargin"
             android:paddingRight="@dimen/defaultMargin"
@@ -48,9 +50,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_margin="0dp"
             android:enabled="false"
-            android:text="Send" />
+            android:text="@string/chat_button_send" />
 
     </RelativeLayout>
 </RelativeLayout>

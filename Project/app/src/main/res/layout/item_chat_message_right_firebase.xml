@@ -11,6 +11,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/userLetterTextView"
+        android:layout_toStartOf="@+id/userLetterTextView"
         android:background="@drawable/chat_message_left_box_firebase"
         android:minHeight="40dp"
         android:minWidth="40dp"
@@ -31,11 +32,13 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/chat_message_user_owner_firebase"
         android:gravity="center"
         android:text=""
         android:textColor="@color/white"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
 </RelativeLayout>

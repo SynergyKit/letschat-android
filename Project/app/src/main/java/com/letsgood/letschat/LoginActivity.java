@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         facebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Toast.makeText(getApplicationContext(), R.string.facebook_login_success, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), R.string.facebook_login_success, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -100,5 +100,10 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+        LoginManager.getInstance().logOut();
+    }
 }

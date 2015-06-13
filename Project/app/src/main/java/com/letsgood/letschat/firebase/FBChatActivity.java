@@ -1,6 +1,5 @@
 package com.letsgood.letschat.firebase;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,12 +9,9 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.letsgood.letschat.ChatActivity;
 import com.letsgood.letschat.CustomProgressDialog;
 import com.letsgood.letschat.R;
-
-import java.util.Map;
 
 public class FBChatActivity extends ChatActivity {
 
