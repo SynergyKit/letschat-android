@@ -32,4 +32,5 @@ dependencies {
     compile 'com.firebase:firebase-client-android:2.3.0' // firebase
     compile 'com.letsgood:synergykit-sdk-android:2.1.7' // synergykit
     compile 'com.facebook.android:facebook-android-sdk:4.1.0' // facebook
+    compile 'com.google.android.gms:play-services-gcm:7.5.0' // gcm
 }

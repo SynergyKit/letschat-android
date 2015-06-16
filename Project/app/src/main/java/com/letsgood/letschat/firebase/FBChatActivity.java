@@ -1,6 +1,12 @@
 package com.letsgood.letschat.firebase;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -13,6 +19,9 @@ import com.letsgood.letschat.ChatActivity;
 import com.letsgood.letschat.CustomProgressDialog;
 import com.letsgood.letschat.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FBChatActivity extends ChatActivity {
 
     private static final String COLLECTION_MESSAGES = "messages";
@@ -20,6 +29,7 @@ public class FBChatActivity extends ChatActivity {
     private Firebase firebase; // firebase
     private String userName;
     private long startingTimestamp;
+    private long userId;
 
     protected void signInViaFacebook() {
         final AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -46,6 +56,8 @@ public class FBChatActivity extends ChatActivity {
 
     private void setupFB(AuthData authData) {
         userName = (String) authData.getProviderData().get("displayName");
+        userId = Long.parseLong(authData.getProviderData().get("id").toString());
+        setStatus(true);
         startingTimestamp = System.currentTimeMillis();
         setupAdapter(userName, false);
         firebase.getRoot().child(COLLECTION_MESSAGES).addChildEventListener(new ChildEventListener() {
@@ -96,6 +108,26 @@ public class FBChatActivity extends ChatActivity {
                 });
             }
         });
+    }
+
+    // Set status of user in firebase
+    private void setStatus(boolean isOnline) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("displayName", userName);
+        map.put("online", isOnline);
+        firebase.child("users").child("" + userId).setValue(map);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (userId != 0) setStatus(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (userId != 0) setStatus(false);
     }
 
     @Override

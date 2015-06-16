@@ -20,4 +20,7 @@
     <string name="chat_edit_text_hint">Write a message...</string>
     <string name="chat_button_send">Send</string>
 
+    <!-- GCM -->
+    <string name="gcm_defaultSenderId">12</string>
+
 </resources>

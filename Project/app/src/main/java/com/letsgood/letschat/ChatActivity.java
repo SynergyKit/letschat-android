@@ -9,7 +9,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.letsgood.synergykitsdkandroid.Synergykit;
+import com.letsgood.synergykitsdkandroid.listeners.PlatformResponseListener;
+import com.letsgood.synergykitsdkandroid.log.SynergykitLog;
+import com.letsgood.synergykitsdkandroid.request.SynergykitRequest;
+import com.letsgood.synergykitsdkandroid.resources.SynergykitError;
+import com.letsgood.synergykitsdkandroid.resources.SynergykitPlatform;
+
+import java.io.IOException;
+
 public abstract class ChatActivity extends AppCompatActivity {
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     protected Button sendButton;
     protected EditText messageEditText;

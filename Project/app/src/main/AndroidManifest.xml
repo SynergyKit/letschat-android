@@ -2,14 +2,35 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.letsgood.letschat">
 
-    <!-- firebase, synergykit, facebook -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <permission android:name="com.letsgood.letschat.permission.C2D_MESSAGE"   android:protectionLevel="signature" />
+    <uses-permission android:name="com.letsgood.letschat.permission.C2D_MESSAGE" />
 
     <application
         android:name=".LetsChatApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name" >
+
+        <receiver
+            android:name="com.letsgood.letschat.GoogleCloudMessageReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.letsgood.letschat" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.letsgood.letschat.NotificationIntent" />
+
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
