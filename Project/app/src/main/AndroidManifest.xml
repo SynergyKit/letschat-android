@@ -21,15 +21,22 @@
         android:label="@string/app_name" >
 
         <receiver
-            android:name="com.letsgood.letschat.GoogleCloudMessageReceiver"
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.letsgood.letschat" />
+                <category android:name="gcm.play.android.samples.com.gcmquickstart" />
             </intent-filter>
         </receiver>
 
-        <service android:name="com.letsgood.letschat.NotificationIntent" />
+        <service
+            android:name="com.letsgood.letschat.MyGcmListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".LoginActivity"
