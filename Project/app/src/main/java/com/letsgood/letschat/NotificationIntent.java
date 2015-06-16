@@ -42,11 +42,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 public class NotificationIntent extends IntentService {
 
     /* Constants */
-    private static final String INTENT_NAME = "SynergyKit Sample App Notification Intent";
-
-    /* Attribute */
-    private GoogleCloudMessaging googleCloudMessaging = null;
-    private NotificationManager notificationManager = null;
+    private static final String INTENT_NAME = "LetsChat - Synergykit";
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -60,7 +56,7 @@ public class NotificationIntent extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
-        notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
                 .setSmallIcon(R.mipmap.ic_launcher)

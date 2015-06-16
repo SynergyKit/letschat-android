@@ -45,7 +45,7 @@ public class GoogleCloudMessageReceiver extends WakefulBroadcastReceiver {
         ComponentName comp = new ComponentName(context, NotificationIntent.class);
 
         // Start the service, keeping the device awake while it is launching.
-        startWakefulService(context, (intent.setComponent(comp)));
+        startWakefulService(context, intent.setComponent(comp));
         setResultCode(Activity.RESULT_OK);
     }
 

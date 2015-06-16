@@ -1,25 +1,21 @@
 package com.letsgood.letschat;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.letsgood.synergykitsdkandroid.Synergykit;
-import com.letsgood.synergykitsdkandroid.listeners.PlatformResponseListener;
-import com.letsgood.synergykitsdkandroid.log.SynergykitLog;
-import com.letsgood.synergykitsdkandroid.request.SynergykitRequest;
-import com.letsgood.synergykitsdkandroid.resources.SynergykitError;
-import com.letsgood.synergykitsdkandroid.resources.SynergykitPlatform;
-
-import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public abstract class ChatActivity extends AppCompatActivity {
 
@@ -38,6 +34,21 @@ public abstract class ChatActivity extends AppCompatActivity {
         initViews();
         setupListeners();
         signInViaFacebook();
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.letsgood.letschat",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
     }
 
     private void setupActionBar() {

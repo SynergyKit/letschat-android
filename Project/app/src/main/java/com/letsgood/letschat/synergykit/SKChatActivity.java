@@ -1,11 +1,5 @@
 package com.letsgood.letschat.synergykit;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,7 +15,6 @@ import com.letsgood.letschat.CustomProgressDialog;
 import com.letsgood.letschat.R;
 import com.letsgood.synergykitsdkandroid.Synergykit;
 import com.letsgood.synergykitsdkandroid.addons.GsonWrapper;
-import com.letsgood.synergykitsdkandroid.listeners.DeleteResponseListener;
 import com.letsgood.synergykitsdkandroid.listeners.PlatformResponseListener;
 import com.letsgood.synergykitsdkandroid.listeners.ResponseListener;
 import com.letsgood.synergykitsdkandroid.listeners.SocketEventListener;
@@ -37,23 +30,19 @@ import com.letsgood.synergykitsdkandroid.resources.SynergykitUser;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class SKChatActivity extends ChatActivity {
 
     private static final String EVENT_MESSAGE = "created";
     private static final String COLLECTION_MESSAGES = "messages";
-    private static final String COLLECTION_ONLINE = "online";
     private static final boolean STORE_MESSAGES = true;
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String SENDER_ID = "125192900606";
     private GoogleCloudMessaging gcm;
     private String regid;
-    private SKOnlineStatus onlineStatus;
 
-    private String userName;
+    private SKUser user;
 
     /* Sign in via Facebook to SynergyKit */
     protected void signInViaFacebook() {
@@ -93,10 +82,13 @@ public class SKChatActivity extends ChatActivity {
                             }
                         }
 
+                        user.setOnline(true);
+
                         // Sign up via SynergyKit
                         Synergykit.linkFacebook(user, synergykitFacebookAuthData, new UserResponseListener() {
                             @Override
                             public void doneCallback(int statusCode, SynergykitUser user) {
+                                SKChatActivity.this.user = (SKUser) user;
                                 progressDialog.dismiss();
                                 setupSK();
                             }
@@ -115,9 +107,8 @@ public class SKChatActivity extends ChatActivity {
 
     // Setup everything that synergykit needs
     private void setupSK() {
-        if (Synergykit.getLoggedUser() == null) return;
-        userName = ((SKUser) Synergykit.getLoggedUser()).getName();
-        setupAdapter(userName, true);
+        if (user == null) return;
+        setupAdapter(user.getName(), true);
 
         if (STORE_MESSAGES) setupStore();
         else setupNonStore();
@@ -141,8 +132,6 @@ public class SKChatActivity extends ChatActivity {
 
             if (regid == null || regid.isEmpty())
                 registerInBackground();
-            else
-                sendButton.setEnabled(true);
 
         } else {
             SynergykitLog.print("No valid Google Play Services APK found.");
@@ -187,7 +176,8 @@ public class SKChatActivity extends ChatActivity {
             public void onClick(View v) {
                 if (messageEditText.getText() == null) return;
 
-                SKMessage message = new SKMessage(userName, messageEditText.getText().toString());
+                if (user == null) return;
+                SKMessage message = new SKMessage(user.getName(), messageEditText.getText().toString());
 
                 Synergykit.createRecord(COLLECTION_MESSAGES, message, new ResponseListener() {
                     @Override
@@ -239,8 +229,8 @@ public class SKChatActivity extends ChatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (messageEditText.getText() != null) {
-                    SKMessage message = new SKMessage(userName, messageEditText.getText().toString());
+                if (user != null && messageEditText.getText() != null) {
+                    SKMessage message = new SKMessage(user.getName(), messageEditText.getText().toString());
 
                     Synergykit.emitViaSocket(EVENT_MESSAGE, message);
                 }
@@ -248,40 +238,22 @@ public class SKChatActivity extends ChatActivity {
         });
     }
 
+    // sets user online
     private void setOnline(boolean online) {
-        if (Synergykit.getLoggedUser() != null) {
+        if (user == null) return;
 
-            if (online && onlineStatus == null) {
-                // create online Record
-                SKOnlineStatus status = new SKOnlineStatus(userName);
-                Synergykit.createRecord(COLLECTION_ONLINE, status, new ResponseListener() {
-                    @Override
-                    public void doneCallback(int i, SynergykitObject synergykitObject) {
-                        onlineStatus = (SKOnlineStatus) synergykitObject;
-                        Toast.makeText(getApplicationContext(), "You are online", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void errorCallback(int i, SynergykitError synergykitError) {
-                        Toast.makeText(getApplicationContext(), synergykitError.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }, true);
-            } else if (!online && onlineStatus != null){
-                // delete online Record
-                Synergykit.deleteRecord(COLLECTION_ONLINE, onlineStatus.getId(), new DeleteResponseListener() {
-                    @Override
-                    public void doneCallback(int i) {
-                        Toast.makeText(getApplicationContext(), "You are offline", Toast.LENGTH_SHORT).show();
-                        onlineStatus = null;
-                    }
-
-                    @Override
-                    public void errorCallback(int i, SynergykitError synergykitError) {
-                        Toast.makeText(getApplicationContext(), synergykitError.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }, true);
+        user.setOnline(online);
+        Synergykit.updateUser(user, new UserResponseListener() {
+            @Override
+            public void doneCallback(int i, SynergykitUser synergykitUser) {
+                user = (SKUser) synergykitUser;
             }
-        }
+
+            @Override
+            public void errorCallback(int i, SynergykitError synergykitError) {
+
+            }
+        }, true);
     }
 
     @Override
@@ -354,7 +326,7 @@ public class SKChatActivity extends ChatActivity {
                 Synergykit.addPlatform(platform, new PlatformResponseListener() {
                     @Override
                     public void doneCallback(int statusCode, SynergykitPlatform platform) {
-                        sendButton.setEnabled(true);
+
                     }
 
                     @Override
@@ -373,7 +345,9 @@ public class SKChatActivity extends ChatActivity {
 
         if (Synergykit.isSocketConnected())
             Synergykit.disconnectSocket();
-        if (Synergykit.getLoggedUser() != null)
+        if (user != null) {
             Synergykit.logoutUser();
+            user = null;
+        }
     }
 }

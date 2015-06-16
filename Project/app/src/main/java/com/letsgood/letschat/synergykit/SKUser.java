@@ -8,6 +8,9 @@ public class SKUser extends SynergykitUser {
     @Expose
     private String name;
 
+    @Expose
+    private boolean online;
+
     public String getName() {
         return name;
     }
@@ -16,4 +19,11 @@ public class SKUser extends SynergykitUser {
         this.name = name;
     }
 
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
 }
