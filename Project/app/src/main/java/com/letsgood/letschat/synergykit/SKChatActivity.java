@@ -1,5 +1,11 @@
 package com.letsgood.letschat.synergykit;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,7 +22,6 @@ import com.letsgood.letschat.R;
 import com.letsgood.synergykitsdkandroid.Synergykit;
 import com.letsgood.synergykitsdkandroid.addons.GsonWrapper;
 import com.letsgood.synergykitsdkandroid.listeners.DeleteResponseListener;
-import com.letsgood.synergykitsdkandroid.listeners.NotificationResponseListener;
 import com.letsgood.synergykitsdkandroid.listeners.PlatformResponseListener;
 import com.letsgood.synergykitsdkandroid.listeners.ResponseListener;
 import com.letsgood.synergykitsdkandroid.listeners.SocketEventListener;
@@ -25,7 +30,6 @@ import com.letsgood.synergykitsdkandroid.log.SynergykitLog;
 import com.letsgood.synergykitsdkandroid.request.SynergykitRequest;
 import com.letsgood.synergykitsdkandroid.resources.SynergykitError;
 import com.letsgood.synergykitsdkandroid.resources.SynergykitFacebookAuthData;
-import com.letsgood.synergykitsdkandroid.resources.SynergykitNotification;
 import com.letsgood.synergykitsdkandroid.resources.SynergykitObject;
 import com.letsgood.synergykitsdkandroid.resources.SynergykitPlatform;
 import com.letsgood.synergykitsdkandroid.resources.SynergykitUser;
@@ -33,6 +37,8 @@ import com.letsgood.synergykitsdkandroid.resources.SynergykitUser;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class SKChatActivity extends ChatActivity {
 
@@ -42,7 +48,7 @@ public class SKChatActivity extends ChatActivity {
     private static final boolean STORE_MESSAGES = true;
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private static final String SENDER_ID = "442287231370";
+    private static final String SENDER_ID = "125192900606";
     private GoogleCloudMessaging gcm;
     private String regid;
     private SKOnlineStatus onlineStatus;
@@ -186,24 +192,6 @@ public class SKChatActivity extends ChatActivity {
                 Synergykit.createRecord(COLLECTION_MESSAGES, message, new ResponseListener() {
                     @Override
                     public void doneCallback(int statusCode, SynergykitObject synergykitObject) {
-                        //create notification
-//                        SynergykitNotification notification = new SynergykitNotification();
-//                        notification.setAlert(messageEditText.getText().toString());
-//                        notification.addUserId(Synergykit.getLoggedUser().getId());
-
-                        //send notification
-//                        Synergykit.sendNotification(notification, new NotificationResponseListener() {
-//                            @Override
-//                            public void doneCallback(int statusCode) {
-//                                Toast.makeText(getApplicationContext(), "Notification sent!", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void errorCallback(int statusCode, SynergykitError errorObject) {
-//                                Toast.makeText(getApplicationContext(), "Notification error!", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }, true);
-
                         messageEditText.setText("");
                     }
 

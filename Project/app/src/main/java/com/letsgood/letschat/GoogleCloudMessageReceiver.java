@@ -42,7 +42,7 @@ public class GoogleCloudMessageReceiver extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // Explicitly specify that GcmIntentService will handle the intent.
-        ComponentName comp = new ComponentName(context.getPackageName(), NotificationIntent.class.getName());
+        ComponentName comp = new ComponentName(context, NotificationIntent.class);
 
         // Start the service, keeping the device awake while it is launching.
         startWakefulService(context, (intent.setComponent(comp)));

@@ -1,44 +1,29 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_centerInParent="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:weightSum="2"
-        android:paddingLeft="@dimen/loginImageSpace"
-        android:paddingRight="@dimen/loginImageSpace"
-        android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/chat_synergykit"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/loginImageHeight"
+        android:contentDescription="@string/login_enter_chat_synergykit"
+        android:src="@drawable/ic_synergykit" />
 
-        <!-- Todo change icon -->
-        <ImageView
-            android:id="@+id/chat_synergykit"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/loginImageHeight"
-            android:contentDescription="@string/login_enter_chat_synergykit"
-            android:src="@drawable/ic_firebase" />
+    <ImageView
+        android:id="@+id/chat_firebase"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/loginImageHeight"
+        android:contentDescription="@string/login_enter_chat_firebase"
+        android:src="@drawable/ic_firebase" />
 
-        <ImageView
-            android:id="@+id/chat_firebase"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/loginImageHeight"
-            android:contentDescription="@string/login_enter_chat_firebase"
-            android:layout_marginLeft="@dimen/loginImageSpace"
-            android:layout_marginStart="@dimen/loginImageSpace"
-            android:src="@drawable/ic_firebase" />
-
-    </LinearLayout>
 
     <com.facebook.login.widget.LoginButton
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/loginFacebookMarginBottom"
-        android:layout_height="wrap_content" />
+        android:layout_marginTop="@dimen/loginFacebookMarginBottom" />
 
-</RelativeLayout>
+</LinearLayout>

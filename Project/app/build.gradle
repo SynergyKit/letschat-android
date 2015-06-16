@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "com.letsgood.letschat"
         minSdkVersion 15
@@ -16,8 +15,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
+        debug {
 
+        }
+    }
 // firebase - because of build error
     packagingOptions {
         exclude 'META-INF/LICENSE'
@@ -27,10 +28,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.firebase:firebase-client-android:2.3.0' // firebase
-    compile 'com.letsgood:synergykit-sdk-android:2.1.7' // synergykit
-    compile 'com.facebook.android:facebook-android-sdk:4.1.0' // facebook
-    compile 'com.google.android.gms:play-services-gcm:7.5.0' // gcm
+    // firebase
+    compile 'com.firebase:firebase-client-android:2.3.0'
+    // synergykit
+    compile 'com.letsgood:synergykit-sdk-android:2.1.7'
+    // facebook
+    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    // gcm
+    compile 'com.google.android.gms:play-services-gcm:7.5.0'
 }

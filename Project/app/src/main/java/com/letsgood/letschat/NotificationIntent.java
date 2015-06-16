@@ -54,7 +54,7 @@ public class NotificationIntent extends IntentService {
     public NotificationIntent() {
         super(INTENT_NAME);
 
-        googleCloudMessaging = GoogleCloudMessaging.getInstance(this);
+//        googleCloudMessaging = GoogleCloudMessaging.getInstance(this);
     }
 
     @Override
