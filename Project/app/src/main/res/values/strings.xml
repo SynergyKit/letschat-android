@@ -11,6 +11,9 @@
     <string name="chat_title_firebase">LetsChat - Firebase</string>
     <string name="chat_login_failed">Login failed. Try again.</string>
     <string name="chat_message_send_failed">Sending message failed. Try again.</string>
+    <string name="synergykit_sign_message">Signing to SynergyKit via Facebook</string>
+    <string name="firebase_sign_message">Signing to Firebase via Facebook</string>
+    <string name="chat_facebook_not_signed">You are not signed in to Facebook</string>
 
     <!-- Facebook -->
     <string name="facebook_app_id">858099304271986</string>

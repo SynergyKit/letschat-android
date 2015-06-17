@@ -41,21 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         initViews();
         setupListeners();
-
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.letsgood.letschat",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
     }
 
     private void initViews() {
@@ -73,7 +58,9 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.login_not_logged_in, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                startActivity(new Intent(getApplicationContext(), SKChatActivity.class));
+                Intent i = new Intent(getApplicationContext(), SKChatActivity.class);
+                i.putExtra(SKChatActivity.EXTRA_FROM_LOGIN_ACTIVITY, true);
+                startActivity(i);
             }
         });
 

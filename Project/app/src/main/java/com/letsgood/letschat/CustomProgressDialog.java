@@ -37,20 +37,20 @@ public class CustomProgressDialog {
 
 	private ProgressDialog pd;
 
-	public CustomProgressDialog(Context context/*, String text*/){
+	public CustomProgressDialog(Context context, String text){
 		pd = new ProgressDialog(context);
 		pd.setCancelable(false);
-//		pd.setMessage(text);
+		pd.setMessage(text);
 		show();
 	}
-	
+
 	public void show(){
 		pd.show();
 	}
-	
+
 	public void dismiss(){
 		pd.dismiss();
 	}
-	
+
 
 }

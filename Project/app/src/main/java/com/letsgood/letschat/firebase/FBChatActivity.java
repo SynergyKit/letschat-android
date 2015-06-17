@@ -1,12 +1,6 @@
 package com.letsgood.letschat.firebase;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -15,6 +9,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.letsgood.letschat.ChatActivity;
 import com.letsgood.letschat.CustomProgressDialog;
 import com.letsgood.letschat.R;
@@ -36,7 +31,7 @@ public class FBChatActivity extends ChatActivity {
         firebase = new Firebase("https://letsgood-letschat.firebaseio.com"); // firebase
 
         /* Firebase sign in facebook */
-        final CustomProgressDialog progressDialog = new CustomProgressDialog(FBChatActivity.this);
+        final CustomProgressDialog progressDialog = new CustomProgressDialog(FBChatActivity.this, getString(R.string.firebase_sign_message));
 
         firebase.authWithOAuthToken("facebook", accessToken.getToken(), new Firebase.AuthResultHandler() {
             @Override
@@ -57,16 +52,15 @@ public class FBChatActivity extends ChatActivity {
     private void setupFB(AuthData authData) {
         userName = (String) authData.getProviderData().get("displayName");
         userId = Long.parseLong(authData.getProviderData().get("id").toString());
-        setStatus(true);
+        setOnline(true);
         startingTimestamp = System.currentTimeMillis();
         setupAdapter(userName, false);
-        firebase.getRoot().child(COLLECTION_MESSAGES).addChildEventListener(new ChildEventListener() {
+        Query query = firebase.getRoot().child(COLLECTION_MESSAGES).orderByChild("timestamp").limitToLast(prevMessageCount);
+        query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot == null) return;
                 FBMessage message = dataSnapshot.getValue(FBMessage.class);
-                if (message.timestamp < startingTimestamp)
-                    return; // workaround to not show old messages
                 adapter.add(message);
                 adapter.notifyDataSetChanged();
             }
@@ -111,23 +105,23 @@ public class FBChatActivity extends ChatActivity {
     }
 
     // Set status of user in firebase
-    private void setStatus(boolean isOnline) {
+    private void setOnline(boolean online) {
         Map<String, Object> map = new HashMap<>();
-        map.put("displayName", userName);
-        map.put("online", isOnline);
+        map.put("name", userName);
+        map.put("online", online);
         firebase.child("users").child("" + userId).setValue(map);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (userId != 0) setStatus(true);
+        if (userId != 0) setOnline(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (userId != 0) setStatus(false);
+        if (userId != 0) setOnline(false);
     }
 
     @Override
