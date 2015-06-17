@@ -1,5 +1,6 @@
 package com.letsgood.letschat.firebase;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,8 +24,14 @@ public class FBChatActivity extends ChatActivity {
 
     private Firebase firebase; // firebase
     private String userName;
-    private long startingTimestamp;
     private long userId;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        signInViaFacebook();
+    }
 
     protected void signInViaFacebook() {
         final AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -37,7 +44,7 @@ public class FBChatActivity extends ChatActivity {
             @Override
             public void onAuthenticated(AuthData authData) {
                 progressDialog.dismiss();
-                setupFB(authData);
+                setupFirebase(authData);
             }
 
             @Override
@@ -49,11 +56,10 @@ public class FBChatActivity extends ChatActivity {
         });
     }
 
-    private void setupFB(AuthData authData) {
+    private void setupFirebase(AuthData authData) {
         userName = (String) authData.getProviderData().get("displayName");
         userId = Long.parseLong(authData.getProviderData().get("id").toString());
         setOnline(true);
-        startingTimestamp = System.currentTimeMillis();
         setupAdapter(userName, false);
         Query query = firebase.getRoot().child(COLLECTION_MESSAGES).orderByChild("timestamp").limitToLast(prevMessageCount);
         query.addChildEventListener(new ChildEventListener() {

@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-public abstract class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity {
 
     protected Button sendButton;
     protected EditText messageEditText;
@@ -73,9 +73,6 @@ public abstract class ChatActivity extends AppCompatActivity {
         adapter = new MessageAdapter(getApplicationContext(), userName, isSynergykit);
         messageListView.setAdapter(adapter);
     }
-
-    /* Sign in via Facebook */
-    protected abstract void signInViaFacebook();
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

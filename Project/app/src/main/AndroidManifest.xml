@@ -11,19 +11,21 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <permission android:name="com.letsgood.letschat.permission.C2D_MESSAGE"   android:protectionLevel="signature" />
+    <permission
+        android:name="com.letsgood.letschat.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
     <uses-permission android:name="com.letsgood.letschat.permission.C2D_MESSAGE" />
 
     <application
         android:name=".LetsChatApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name">
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <category android:name="gcm.play.android.samples.com.gcmquickstart" />
@@ -32,7 +34,7 @@
 
         <service
             android:name="com.letsgood.letschat.MyGcmListenerService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
@@ -40,9 +42,9 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:label="@string/app_name">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,16 +55,16 @@
         <!-- synergykit -->
         <activity
             android:name=".synergykit.SKChatActivity"
+            android:label="@string/chat_title_synergykit"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Synergykit"
-            android:label="@string/chat_title_synergykit" />
+            android:theme="@style/AppTheme.Synergykit"/>
 
         <!-- firebase -->
         <activity
             android:name=".firebase.FBChatActivity"
+            android:label="@string/chat_title_firebase"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Firebase"
-            android:label="@string/chat_title_firebase" />
+            android:theme="@style/AppTheme.Firebase"/>
 
         <!-- facebook -->
         <activity

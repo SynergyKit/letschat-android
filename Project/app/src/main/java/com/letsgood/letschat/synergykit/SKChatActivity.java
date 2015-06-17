@@ -1,26 +1,17 @@
 package com.letsgood.letschat.synergykit;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.letsgood.letschat.ChatActivity;
 import com.letsgood.letschat.CustomProgressDialog;
-import com.letsgood.letschat.LetsChatApplication;
 import com.letsgood.letschat.R;
 import com.letsgood.synergykitsdkandroid.Synergykit;
 import com.letsgood.synergykitsdkandroid.addons.GsonWrapper;
@@ -41,10 +32,10 @@ import com.letsgood.synergykitsdkandroid.resources.SynergykitPlatform;
 import com.letsgood.synergykitsdkandroid.resources.SynergykitUri;
 import com.letsgood.synergykitsdkandroid.resources.SynergykitUser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 public class SKChatActivity extends ChatActivity {
 
@@ -56,22 +47,19 @@ public class SKChatActivity extends ChatActivity {
     private static final String SHARED_PREFERENCES_USER_ID = "SKChatActivity.SHARED_PREFERENCES_USER_ID";
     private static final String SHARED_PREFERENCES_SESSION_TOKEN = "SKChatActivity.SHARED_PREFERENCES_SESSION_TOKEN";
 
-    private String userId;
-    private String sessionToken;
-
     private GoogleCloudMessaging gcm;
     private String regid;
 
     private SKUser user;
     private SynergykitPlatform platform;
 
-    CallbackManager callbackManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userId = sharedPreferences.getString(SHARED_PREFERENCES_USER_ID, null);
-        sessionToken = sharedPreferences.getString(SHARED_PREFERENCES_SESSION_TOKEN, null);
+
+        // Get user id and sessionToken
+        String userId = sharedPreferences.getString(SHARED_PREFERENCES_USER_ID, null);
+        String sessionToken = sharedPreferences.getString(SHARED_PREFERENCES_SESSION_TOKEN, null);
 
         if (userId == null || sessionToken == null)
             signInViaFacebook();
@@ -82,7 +70,7 @@ public class SKChatActivity extends ChatActivity {
                 public void doneCallback(int i, SynergykitUser synergykitUser) {
                     user = (SKUser) synergykitUser;
                     setOnline(true, true);
-                    setupSK();
+                    setupSynergyKit();
                 }
 
                 @Override
@@ -97,74 +85,30 @@ public class SKChatActivity extends ChatActivity {
     /* Sign in via Facebook to SynergyKit */
     protected void signInViaFacebook() {
 
-        if (!fromLoginActivity) init();
-        if (AccessToken.getCurrentAccessToken() == null) {
-            facebookLogin(new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    if (AccessToken.getCurrentAccessToken() == null) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.chat_facebook_not_signed), Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                    facebookGetDataAndRegister(AccessToken.getCurrentAccessToken());
-                }
+        final AccessToken accessToken = AccessToken.getCurrentAccessToken();
 
-                @Override
-                public void onCancel() {
-                    Toast.makeText(getApplicationContext(), getString(R.string.chat_facebook_not_signed), Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-
-                @Override
-                public void onError(FacebookException e) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.chat_facebook_not_signed), Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            });
-        } else {
-            facebookGetDataAndRegister(AccessToken.getCurrentAccessToken());
+        if (accessToken == null) {
+            Toast.makeText(getApplicationContext(), R.string.chat_facebook_not_signed, Toast.LENGTH_SHORT).show();
+            finish();
         }
 
-    }
-
-    private void facebookLogin(FacebookCallback<LoginResult> callback) {
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager, callback);
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-    }
-
-    private void facebookGetDataAndRegister(final AccessToken accessToken) {
-        // App code
         GraphRequest request = GraphRequest.newMeRequest(accessToken,
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
 
-                        SKUser user;
-
                         //show loading progress bar
                         final CustomProgressDialog progressDialog = new CustomProgressDialog(SKChatActivity.this, getString(R.string.synergykit_sign_message));
 
+                        SKUser user = new SKUser();
                         SynergykitFacebookAuthData synergykitFacebookAuthData = new SynergykitFacebookAuthData(accessToken.getUserId(), accessToken.getToken());
 
-                        if (Synergykit.getLoggedUser() == null) {
-                            user = new SKUser();
-                        } else {
-                            user = (SKUser) Synergykit.getLoggedUser();
-                        }
-
-                        //set user name if not exists
-                        if (user.getName() == null || user.getName().isEmpty()) {
-                            if (Profile.getCurrentProfile() != null && Profile.getCurrentProfile().getFirstName() != null)
-                                user.setName(Profile.getCurrentProfile().getFirstName());
-
-                            if (Profile.getCurrentProfile() != null && Profile.getCurrentProfile().getLastName() != null) {
-                                if (user.getName() != null && !user.getName().isEmpty()) {
-                                    user.setName(user.getName() + " " + Profile.getCurrentProfile().getLastName());
-                                } else {
-                                    user.setName(Profile.getCurrentProfile().getLastName());
-                                }
-                            }
+                        try {
+                            user.setName(object.getString("name"));
+                            user.setOnline(true);
+                        } catch (JSONException e) {
+                            user.setName("JSONException :(");
+                            e.printStackTrace();
                         }
 
                         // Sign up via SynergyKit
@@ -172,15 +116,12 @@ public class SKChatActivity extends ChatActivity {
                             @Override
                             public void doneCallback(int statusCode, SynergykitUser user) {
                                 SKChatActivity.this.user = (SKUser) user;
-                                userId = user.getId();
-                                sessionToken = user.getSessionToken();
                                 sharedPreferences.edit()
-                                        .putString(SHARED_PREFERENCES_USER_ID, userId)
-                                        .putString(SHARED_PREFERENCES_SESSION_TOKEN, sessionToken)
+                                        .putString(SHARED_PREFERENCES_USER_ID, user.getId())
+                                        .putString(SHARED_PREFERENCES_SESSION_TOKEN, user.getSessionToken())
                                         .apply();
-                                setOnline(true, false);
                                 progressDialog.dismiss();
-                                setupSK();
+                                setupSynergyKit();
                             }
 
                             @Override
@@ -192,19 +133,14 @@ public class SKChatActivity extends ChatActivity {
                         });
                     }
                 });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "name");
+        request.setParameters(parameters);
         request.executeAsync();
     }
 
-    private void init() {
-        // init SDKs
-        if (!FacebookSdk.isInitialized()) // facebook
-            FacebookSdk.sdkInitialize(getApplicationContext());
-        if (!Synergykit.isInit()) // synergykit
-            Synergykit.init(LetsChatApplication.APPLICATION_TENANT, LetsChatApplication.APPLICATION_KEY);
-    }
-
     // Setup everything that synergykit needs
-    private void setupSK() {
+    private void setupSynergyKit() {
         if (user == null) return;
         setupAdapter(user.getName(), true);
 
@@ -215,7 +151,8 @@ public class SKChatActivity extends ChatActivity {
 
         // Check device for Play Services APK.
         if (checkPlayServices()) {
-            gcm = GoogleCloudMessaging.getInstance(this);
+
+            gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
 
             if (user.getPlatforms() != null) {
                 for (SynergykitPlatform p : user.getPlatforms()) {
@@ -382,15 +319,10 @@ public class SKChatActivity extends ChatActivity {
             @Override
             protected Object doInBackground(Void... params) {
                 try {
-                    if (gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                    }
-
                     regid = gcm.register(SENDER_ID);
 
                 } catch (IOException ex) {
                 }
-
                 return regid;
             }
 
@@ -455,12 +387,5 @@ public class SKChatActivity extends ChatActivity {
             Synergykit.logoutUser();
             user = null;
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (callbackManager != null)
-            callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }
