@@ -1,6 +1,7 @@
 package com.letsgood.letschat.synergykit;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -52,47 +53,78 @@ public class SKChatActivity extends ChatActivity {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String SENDER_ID = "125192900606";
+    private static final String SHARED_PREFERENCES_USER_ID = "SKChatActivity.SHARED_PREFERENCES_USER_ID";
+    private static final String SHARED_PREFERENCES_SESSION_TOKEN = "SKChatActivity.SHARED_PREFERENCES_SESSION_TOKEN";
+
+    private String userId;
+    private String sessionToken;
+
     private GoogleCloudMessaging gcm;
     private String regid;
 
     private SKUser user;
     private SynergykitPlatform platform;
+
     CallbackManager callbackManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        userId = sharedPreferences.getString(SHARED_PREFERENCES_USER_ID, null);
+        sessionToken = sharedPreferences.getString(SHARED_PREFERENCES_SESSION_TOKEN, null);
+
+        if (userId == null || sessionToken == null)
+            signInViaFacebook();
+        else {
+            Synergykit.setSessionToken(sessionToken);
+            Synergykit.getUser(userId, SKUser.class, new UserResponseListener() {
+                @Override
+                public void doneCallback(int i, SynergykitUser synergykitUser) {
+                    user = (SKUser) synergykitUser;
+                    setOnline(true, true);
+                    setupSK();
+                }
+
+                @Override
+                public void errorCallback(int i, SynergykitError synergykitError) {
+                    Toast.makeText(getApplicationContext(), "getUser - error", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }, true);
+        }
+    }
 
     /* Sign in via Facebook to SynergyKit */
     protected void signInViaFacebook() {
 
-        if (!fromLoginActivity) {
-            init();
-            if (AccessToken.getCurrentAccessToken() == null) {
-                facebookLogin(new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        if (AccessToken.getCurrentAccessToken() == null) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.chat_facebook_not_signed), Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                        facebookGetDataAndRegister(AccessToken.getCurrentAccessToken());
-                    }
-
-                    @Override
-                    public void onCancel() {
+        if (!fromLoginActivity) init();
+        if (AccessToken.getCurrentAccessToken() == null) {
+            facebookLogin(new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    if (AccessToken.getCurrentAccessToken() == null) {
                         Toast.makeText(getApplicationContext(), getString(R.string.chat_facebook_not_signed), Toast.LENGTH_SHORT).show();
                         finish();
                     }
+                    facebookGetDataAndRegister(AccessToken.getCurrentAccessToken());
+                }
 
-                    @Override
-                    public void onError(FacebookException e) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.chat_facebook_not_signed), Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                });
-            } else {
-                facebookGetDataAndRegister(AccessToken.getCurrentAccessToken());
-            }
+                @Override
+                public void onCancel() {
+                    Toast.makeText(getApplicationContext(), getString(R.string.chat_facebook_not_signed), Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
+                @Override
+                public void onError(FacebookException e) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.chat_facebook_not_signed), Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
         } else {
             facebookGetDataAndRegister(AccessToken.getCurrentAccessToken());
         }
+
     }
 
     private void facebookLogin(FacebookCallback<LoginResult> callback) {
@@ -140,6 +172,12 @@ public class SKChatActivity extends ChatActivity {
                             @Override
                             public void doneCallback(int statusCode, SynergykitUser user) {
                                 SKChatActivity.this.user = (SKUser) user;
+                                userId = user.getId();
+                                sessionToken = user.getSessionToken();
+                                sharedPreferences.edit()
+                                        .putString(SHARED_PREFERENCES_USER_ID, userId)
+                                        .putString(SHARED_PREFERENCES_SESSION_TOKEN, sessionToken)
+                                        .apply();
                                 setOnline(true, false);
                                 progressDialog.dismiss();
                                 setupSK();
@@ -204,7 +242,7 @@ public class SKChatActivity extends ChatActivity {
                 .newInstance()
                 .setResource(Resource.RESOURCE_DATA)
                 .setCollection(COLLECTION_MESSAGES)
-                .setOrderByAsc("createdAt")
+                .setOrderByDesc("createdAt")
                 .setTop(prevMessageCount)
                 .build();
         // Get old messages - config
@@ -215,13 +253,15 @@ public class SKChatActivity extends ChatActivity {
         // Get old messages
         Synergykit.getRecords(config, new RecordsResponseListener() {
             @Override
-            public void doneCallback(int i, SynergykitObject[] synergykitObjects) {
-                adapter.addAll((SKMessage[]) synergykitObjects);
+            public void doneCallback(int statusCode, SynergykitObject[] synergykitObjects) {
+                SKMessage[] messages = (SKMessage[]) synergykitObjects;
+                for (int i = messages.length - 1; i >= 0; i--)
+                    adapter.add(messages[i]);
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void errorCallback(int i, SynergykitError synergykitError) {
+            public void errorCallback(int statusCode, SynergykitError synergykitError) {
 
             }
         });

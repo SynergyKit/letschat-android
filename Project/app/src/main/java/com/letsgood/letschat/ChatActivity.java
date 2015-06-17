@@ -1,5 +1,6 @@
 package com.letsgood.letschat;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -17,9 +18,11 @@ public abstract class ChatActivity extends AppCompatActivity {
     protected MessageAdapter adapter;
 
     public static final String EXTRA_FROM_LOGIN_ACTIVITY = "extra_from_login_activity";
+    private static final String SHARED_PREFERENCES = "i7h2g9uefh0a909ujc48ej8cmq";
 
     protected int prevMessageCount = 100;
     protected boolean fromLoginActivity;
+    protected SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +30,10 @@ public abstract class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         if (getIntent() != null && getIntent().getExtras() != null)
             fromLoginActivity = getIntent().getExtras().getBoolean(EXTRA_FROM_LOGIN_ACTIVITY, false);
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, 0);
         setupActionBar();
         initViews();
         setupListeners();
-        signInViaFacebook();
     }
 
     private void setupActionBar() {
