@@ -95,12 +95,14 @@ public class FBChatActivity extends ChatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sendButton.setEnabled(false);
                 FBMessage message = new FBMessage(userName, messageEditText.getText().toString());
                 firebase.getRoot().child(COLLECTION_MESSAGES).push().setValue(message, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                         if (firebaseError != null) {
                             Toast.makeText(getApplicationContext(), R.string.chat_message_send_failed, Toast.LENGTH_SHORT).show();
+                            sendButton.setEnabled(true);
                             return;
                         }
                         messageEditText.setText("");

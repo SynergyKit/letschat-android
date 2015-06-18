@@ -1,6 +1,8 @@
 package com.letsgood.letschat.synergykit;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,6 +14,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.letsgood.letschat.ChatActivity;
 import com.letsgood.letschat.CustomProgressDialog;
+import com.letsgood.letschat.LoginActivity;
 import com.letsgood.letschat.R;
 import com.letsgood.synergykitsdkandroid.Synergykit;
 import com.letsgood.synergykitsdkandroid.addons.GsonWrapper;
@@ -75,8 +78,7 @@ public class SKChatActivity extends ChatActivity {
 
                 @Override
                 public void errorCallback(int i, SynergykitError synergykitError) {
-                    Toast.makeText(getApplicationContext(), "getUser - error", Toast.LENGTH_SHORT).show();
-                    finish();
+                    signInViaFacebook();
                 }
             }, true);
         }
@@ -236,8 +238,9 @@ public class SKChatActivity extends ChatActivity {
             @Override
             public void onClick(View v) {
                 if (messageEditText.getText() == null) return;
-
                 if (user == null) return;
+
+                sendButton.setEnabled(false);
                 SKMessage message = new SKMessage(user.getName(), messageEditText.getText().toString());
 
                 Synergykit.createRecord(COLLECTION_MESSAGES, message, new ResponseListener() {
@@ -249,7 +252,7 @@ public class SKChatActivity extends ChatActivity {
                     @Override
                     public void errorCallback(int statusCode, SynergykitError synergykitError) {
                         Toast.makeText(getApplicationContext(), R.string.chat_message_send_failed, Toast.LENGTH_SHORT).show();
-
+                        sendButton.setEnabled(true);
                     }
                 }, false);
             }
@@ -375,6 +378,18 @@ public class SKChatActivity extends ChatActivity {
             }
         }, true);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (!fromLoginActivity) {
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

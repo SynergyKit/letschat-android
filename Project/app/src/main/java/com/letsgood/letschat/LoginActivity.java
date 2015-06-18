@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 Intent i = new Intent(getApplicationContext(), SKChatActivity.class);
-                i.putExtra(SKChatActivity.EXTRA_FROM_LOGIN_ACTIVITY, true);
+                i.putExtra(ChatActivity.EXTRA_FROM_LOGIN_ACTIVITY, true);
                 startActivity(i);
             }
         });
@@ -72,7 +72,9 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.login_not_logged_in, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                startActivity(new Intent(getApplicationContext(), FBChatActivity.class));
+                Intent i = new Intent(getApplicationContext(), FBChatActivity.class);
+                i.putExtra(ChatActivity.EXTRA_FROM_LOGIN_ACTIVITY, true);
+                startActivity(i);
             }
         });
 
