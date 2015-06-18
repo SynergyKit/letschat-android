@@ -24,7 +24,7 @@ public class FBChatActivity extends ChatActivity {
 
     private Firebase firebase; // firebase
     private String userName;
-    private long userId;
+    private String uId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class FBChatActivity extends ChatActivity {
 
     private void setupFirebase(AuthData authData) {
         userName = (String) authData.getProviderData().get("displayName");
-        userId = Long.parseLong(authData.getProviderData().get("id").toString());
+        uId = authData.getUid();
         setOnline(true);
         setupAdapter(userName, false);
         Query query = firebase.getRoot().child(COLLECTION_MESSAGES).orderByChild("timestamp").limitToLast(prevMessageCount);
@@ -117,19 +117,19 @@ public class FBChatActivity extends ChatActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("name", userName);
         map.put("online", online);
-        firebase.child("users").child("" + userId).setValue(map);
+        firebase.child("users").child("" + uId).setValue(map);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (userId != 0) setOnline(true);
+        if (uId != null) setOnline(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (userId != 0) setOnline(false);
+        if (uId != null) setOnline(false);
     }
 
     @Override

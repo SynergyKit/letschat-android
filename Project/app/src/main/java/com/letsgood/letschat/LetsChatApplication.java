@@ -1,6 +1,7 @@
 package com.letsgood.letschat;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.Logger;
 import com.letsgood.synergykitsdkandroid.Synergykit;
 
 public class LetsChatApplication extends android.app.Application {
@@ -15,11 +16,14 @@ public class LetsChatApplication extends android.app.Application {
 
         // firebase
         Firebase.setAndroidContext(this);
+        if (BuildConfig.DEBUG)
+            Firebase.getDefaultConfig().setLogLevel(Logger.Level.DEBUG);
 
         // synergykit
         if (!Synergykit.isInit()) {
             Synergykit.init(APPLICATION_TENANT, APPLICATION_KEY);
-            Synergykit.setDebugModeEnabled(BuildConfig.DEBUG);
+            if (BuildConfig.DEBUG)
+                Synergykit.setDebugModeEnabled(BuildConfig.DEBUG);
         }
     }
 }
