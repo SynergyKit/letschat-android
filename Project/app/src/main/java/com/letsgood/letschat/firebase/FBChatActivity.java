@@ -21,6 +21,7 @@ import java.util.Map;
 public class FBChatActivity extends ChatActivity {
 
     private static final String COLLECTION_MESSAGES = "messages";
+    private static final String COLLECTION_USERS = "users";
 
     private Firebase firebase; // firebase
     private String userName;
@@ -95,6 +96,7 @@ public class FBChatActivity extends ChatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (messageEditText.getText() == null) return;
                 sendButton.setEnabled(false);
                 FBMessage message = new FBMessage(userName, messageEditText.getText().toString());
                 firebase.getRoot().child(COLLECTION_MESSAGES).push().setValue(message, new Firebase.CompletionListener() {
@@ -117,7 +119,7 @@ public class FBChatActivity extends ChatActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("name", userName);
         map.put("online", online);
-        firebase.child("users").child("" + uId).setValue(map);
+        firebase.child(COLLECTION_USERS).child("" + uId).setValue(map);
     }
 
     @Override

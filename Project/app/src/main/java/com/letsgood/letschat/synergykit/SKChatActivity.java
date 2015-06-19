@@ -42,7 +42,7 @@ import java.io.IOException;
 
 public class SKChatActivity extends ChatActivity {
 
-    private static final String EVENT_MESSAGE = "created";
+    private static final String EVENT_CREATED = "created";
     private static final String COLLECTION_MESSAGES = "messages";
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -206,7 +206,7 @@ public class SKChatActivity extends ChatActivity {
         });
 
         // Listen for changes in collection
-        Synergykit.onSocket(EVENT_MESSAGE, COLLECTION_MESSAGES, new SocketEventListener() {
+        Synergykit.onSocket(EVENT_CREATED, COLLECTION_MESSAGES, new SocketEventListener() {
             @Override
             public void call(Object... objects) {
 
@@ -254,7 +254,7 @@ public class SKChatActivity extends ChatActivity {
                         Toast.makeText(getApplicationContext(), R.string.chat_message_send_failed, Toast.LENGTH_SHORT).show();
                         sendButton.setEnabled(true);
                     }
-                }, false);
+                }, true);
             }
         });
     }
@@ -323,7 +323,6 @@ public class SKChatActivity extends ChatActivity {
             protected Object doInBackground(Void... params) {
                 try {
                     regid = gcm.register(SENDER_ID);
-
                 } catch (IOException ex) {
                 }
                 return regid;
