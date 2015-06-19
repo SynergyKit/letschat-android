@@ -362,17 +362,7 @@ public class SKChatActivity extends ChatActivity {
                     }, true);
                 } else if (!platform.getRegistrationId().equals(regid)) {
                     platform.setRegistrationId(regid);
-                    Synergykit.updatePlatform(platform, new PlatformResponseListener() {
-                        @Override
-                        public void doneCallback(int i, SynergykitPlatform synergykitPlatform) {
-
-                        }
-
-                        @Override
-                        public void errorCallback(int i, SynergykitError synergykitError) {
-
-                        }
-                    }, true);
+                    Synergykit.updatePlatform(platform, null, true);
                 }
             }
         }, true);
