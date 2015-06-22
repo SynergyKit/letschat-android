@@ -14,6 +14,9 @@
     <string name="synergykit_sign_message">Signing to SynergyKit via Facebook</string>
     <string name="firebase_sign_message">Signing to Firebase via Facebook</string>
     <string name="chat_facebook_not_signed">You are not signed in to Facebook</string>
+    <string name="chat_connected">Connected</string>
+    <string name="chat_reconnected">Reconnected</string>
+    <string name="chat_disconnected">Disconnected</string>
 
     <!-- Facebook -->
     <string name="facebook_app_id">858099304271986</string>
@@ -23,7 +26,11 @@
     <string name="chat_edit_text_hint">Write a message...</string>
     <string name="chat_button_send">Send</string>
 
+    <string name="network_error">You don\'t have network connection.</string>
+
     <!-- GCM -->
     <string name="gcm_defaultSenderId">12</string>
+    <string name="chat_online_error_push">You are still online on server, you won\'t receive push notifications.</string>
+    <string name="chat_offline_error_push">You are still offline on server, you will receive push notifications.</string>
 
 </resources>

@@ -48,5 +48,9 @@
     <color name="chatMessageLeftText">@color/gray_brightness38</color>
     <color name="chatMessageRightText">@color/gray_brightness38</color>
     <color name="chatMessageRightBackground">#e7e5e2</color>
+    <color name="chatConnectedBackground">#00FF00</color>
+    <color name="chatConnectedText">@color/white</color>
+    <color name="chatDisconnectedBackground">#FF0000</color>
+    <color name="chatDisconnectedText">@color/white</color>
 
 </resources>

@@ -22,6 +22,15 @@
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
 
+    <TextView
+        android:id="@+id/connectedStatus"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="Disconnected"
+        android:gravity="center"
+        android:background="@color/chatDisconnectedBackground"
+        android:textColor="@color/chatDisconnectedText"/>
+
     <RelativeLayout
         android:id="@+id/messageSendWrapper"
         style="@style/layoutGray"

@@ -25,6 +25,7 @@ import com.letsgood.synergykitsdkandroid.listeners.PlatformResponseListener;
 import com.letsgood.synergykitsdkandroid.listeners.RecordsResponseListener;
 import com.letsgood.synergykitsdkandroid.listeners.ResponseListener;
 import com.letsgood.synergykitsdkandroid.listeners.SocketEventListener;
+import com.letsgood.synergykitsdkandroid.listeners.SocketStateListener;
 import com.letsgood.synergykitsdkandroid.listeners.UserResponseListener;
 import com.letsgood.synergykitsdkandroid.log.SynergykitLog;
 import com.letsgood.synergykitsdkandroid.request.SynergykitRequest;
@@ -55,6 +56,8 @@ public class SKChatActivity extends ChatActivity {
 
     private SKUser user;
     private SynergykitPlatform platform;
+
+    private boolean messageSending;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +95,19 @@ public class SKChatActivity extends ChatActivity {
         if (accessToken == null) {
             Toast.makeText(getApplicationContext(), R.string.chat_facebook_not_signed, Toast.LENGTH_SHORT).show();
             finish();
+            return;
         }
 
         GraphRequest request = GraphRequest.newMeRequest(accessToken,
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
+
+                        if (object == null) {
+                            Toast.makeText(getApplicationContext(), R.string.chat_login_failed, Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        }
 
                         //show loading progress bar
                         final CustomProgressDialog progressDialog = new CustomProgressDialog(SKChatActivity.this, getString(R.string.synergykit_sign_message));
@@ -130,6 +140,7 @@ public class SKChatActivity extends ChatActivity {
                             public void errorCallback(int statusCode, SynergykitError errorObject) {
                                 progressDialog.dismiss();
                                 Toast.makeText(getApplicationContext(), R.string.chat_login_failed, Toast.LENGTH_SHORT).show();
+                                connected = false;
                                 finish();
                             }
                         });
@@ -149,7 +160,29 @@ public class SKChatActivity extends ChatActivity {
         setupStore();
 
         // Connect to socket
-        Synergykit.connectSocket();
+        Synergykit.connectSocket(new SocketStateListener() {
+            @Override
+            public void connected() {
+                setStatus(STATUS_CONNECTED);
+            }
+
+            @Override
+            public void disconnected() {
+                setStatus(STATUS_DISCONNECTED);
+            }
+
+            @Override
+            public void reconnected() {
+
+            }
+
+            @Override
+            public void unauthorized() {
+                Toast.makeText(getApplicationContext(), R.string.chat_login_failed, Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
 
         // Check device for Play Services APK.
         if (checkPlayServices()) {
@@ -170,6 +203,7 @@ public class SKChatActivity extends ChatActivity {
 
         } else {
             SynergykitLog.print("No valid Google Play Services APK found.");
+            finish();
         }
     }
 
@@ -201,7 +235,7 @@ public class SKChatActivity extends ChatActivity {
 
             @Override
             public void errorCallback(int statusCode, SynergykitError synergykitError) {
-
+                Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -240,27 +274,38 @@ public class SKChatActivity extends ChatActivity {
                 if (messageEditText.getText() == null) return;
                 if (user == null) return;
 
-                sendButton.setEnabled(false);
+                messageSending = true;
+                enableSend();
                 SKMessage message = new SKMessage(user.getName(), messageEditText.getText().toString());
 
                 Synergykit.createRecord(COLLECTION_MESSAGES, message, new ResponseListener() {
                     @Override
                     public void doneCallback(int statusCode, SynergykitObject synergykitObject) {
                         messageEditText.setText("");
+                        messageEditText.setError(null);
+                        messageSending = false;
+                        hasText = false;
+                        enableSend();
                     }
 
                     @Override
                     public void errorCallback(int statusCode, SynergykitError synergykitError) {
-                        Toast.makeText(getApplicationContext(), R.string.chat_message_send_failed, Toast.LENGTH_SHORT).show();
-                        sendButton.setEnabled(true);
+//                        Toast.makeText(getApplicationContext(), R.string.chat_message_send_failed, Toast.LENGTH_SHORT).show();
+                        messageSending = false;
+                        messageEditText.setError("Message has not been sent. Try again");
                     }
                 }, true);
             }
         });
     }
 
+    @Override
+    protected void enableSend() {
+        sendButton.setEnabled(hasText && connected && !messageSending);
+    }
+
     // sets user online
-    private void setOnline(boolean online, boolean parallelMode) {
+    private void setOnline(final boolean online, boolean parallelMode) {
         if (user == null) return;
 
         user.setOnline(online);
@@ -272,7 +317,11 @@ public class SKChatActivity extends ChatActivity {
 
             @Override
             public void errorCallback(int i, SynergykitError synergykitError) {
-
+                if (user.isOnline()) {
+                    Toast.makeText(getApplicationContext(), R.string.chat_online_error_push, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.chat_offline_error_push, Toast.LENGTH_LONG).show();
+                }
             }
         }, parallelMode);
     }
@@ -357,7 +406,7 @@ public class SKChatActivity extends ChatActivity {
 
                         @Override
                         public void errorCallback(int statusCode, SynergykitError errorObject) {
-
+                            Toast.makeText(getApplicationContext(), "Error - You won't receive push notification.", Toast.LENGTH_SHORT).show();
                         }
                     }, true);
                 } else if (!platform.getRegistrationId().equals(regid)) {

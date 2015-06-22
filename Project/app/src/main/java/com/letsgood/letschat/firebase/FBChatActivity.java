@@ -11,6 +11,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.letsgood.letschat.ChatActivity;
 import com.letsgood.letschat.CustomProgressDialog;
 import com.letsgood.letschat.R;
@@ -23,7 +24,10 @@ public class FBChatActivity extends ChatActivity {
     private static final String COLLECTION_MESSAGES = "messages";
     private static final String COLLECTION_USERS = "users";
 
-    private Firebase firebase; // firebase
+    private Firebase firebaseRoot; // firebase
+    private Firebase firebaseMessages; // firebase
+    private Firebase firebaseUsers; // firebase
+    private Firebase firebaseConnected; // firebase
     private String userName;
     private String uId;
 
@@ -36,12 +40,15 @@ public class FBChatActivity extends ChatActivity {
 
     protected void signInViaFacebook() {
         final AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        firebase = new Firebase("https://letsgood-letschat.firebaseio.com"); // firebase
+        firebaseRoot = new Firebase("https://letsgood-letschat.firebaseio.com"); // firebase
+        firebaseMessages = new Firebase("https://letsgood-letschat.firebaseio.com/"+COLLECTION_MESSAGES); // firebase
+        firebaseUsers = new Firebase("https://letsgood-letschat.firebaseio.com/"+COLLECTION_USERS); // firebase
+        firebaseConnected = new Firebase("https://letsgood-letschat.firebaseio.com/.info/connected"); // firebase
 
         /* Firebase sign in facebook */
         final CustomProgressDialog progressDialog = new CustomProgressDialog(FBChatActivity.this, getString(R.string.firebase_sign_message));
 
-        firebase.authWithOAuthToken("facebook", accessToken.getToken(), new Firebase.AuthResultHandler() {
+        firebaseRoot.authWithOAuthToken("facebook", accessToken.getToken(), new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
                 progressDialog.dismiss();
@@ -62,7 +69,9 @@ public class FBChatActivity extends ChatActivity {
         uId = authData.getUid();
         setOnline(true);
         setupAdapter(userName, false);
-        Query query = firebase.getRoot().child(COLLECTION_MESSAGES).orderByChild("timestamp").limitToLast(prevMessageCount);
+
+        // Reading & listening messages
+        Query query = firebaseMessages.orderByChild("timestamp").limitToLast(prevMessageCount);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -93,23 +102,44 @@ public class FBChatActivity extends ChatActivity {
             }
         });
 
+        // Sending messages
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (messageEditText.getText() == null) return;
                 sendButton.setEnabled(false);
-                FBMessage message = new FBMessage(userName, messageEditText.getText().toString());
-                firebase.getRoot().child(COLLECTION_MESSAGES).push().setValue(message, new Firebase.CompletionListener() {
+                final FBMessage message = new FBMessage(userName, messageEditText.getText().toString());
+                firebaseMessages.push().setValue(message, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                         if (firebaseError != null) {
-                            Toast.makeText(getApplicationContext(), R.string.chat_message_send_failed, Toast.LENGTH_SHORT).show();
-                            sendButton.setEnabled(true);
+//                            Toast.makeText(getApplicationContext(), R.string.chat_message_send_failed, Toast.LENGTH_SHORT).show();
+                            messageEditText.setError("Message has not been sent. Try again");
                             return;
                         }
                         messageEditText.setText("");
+                        messageEditText.setError(null);
+                        hasText = false;
+                        enableSend();
                     }
                 });
+            }
+        });
+
+        // Connected Status
+        firebaseConnected.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    setStatus(STATUS_CONNECTED);
+                } else {
+                    setStatus(STATUS_DISCONNECTED);
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                System.err.println("Listener was cancelled");
             }
         });
     }
@@ -119,7 +149,7 @@ public class FBChatActivity extends ChatActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("name", userName);
         map.put("online", online);
-        firebase.child(COLLECTION_USERS).child("" + uId).setValue(map);
+        firebaseUsers.child("" + uId).setValue(map);
     }
 
     @Override
@@ -138,6 +168,6 @@ public class FBChatActivity extends ChatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        firebase.unauth();
+        firebaseRoot.unauth();
     }
 }
