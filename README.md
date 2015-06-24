@@ -9,4 +9,4 @@ In order to compare these two products, I will take a look at very frequent Use 
 You can read whole article at xxxx.
 
 # License
-LetChat application is available under the Apache 2.0 license. See the LICENSE file for more info.
+LetsChat application is available under the Apache 2.0 license. See the LICENSE file for more info.
