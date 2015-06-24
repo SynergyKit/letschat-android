@@ -7,3 +7,6 @@ The world’s most famous realtime platform is most probably Firabase which is u
 In order to compare these two products, I will take a look at very frequent Use Case which is part of a chat application. The application displays realtime messages from users and they are sent using push notification if application is not in foreground. You can register and login via Facebook profile.
 
 You can read whole article at xxxx.
+
+# License
+LetChat application is available under the Apache 2.0 license. See the LICENSE file for more info.
